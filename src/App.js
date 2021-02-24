@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
 
@@ -9,14 +10,66 @@ function App() {
 
   return (
     <div className="App">
+
+      {
+        products.map(pd => <Product name={pd.name} price={pd.price}></Product>)
+      }
       
-      <Product name={products[0].name} price={products[0].price}></Product>
-      <Product name={products[1].name} price={products[1].price}></Product>
-      <Product name={products[2].name} price={products[2].price}></Product>
-      <Product name={products[3].name} price={products[3].price}></Product>
-      <Product name={products[4].name} price={products[4].price}></Product>
+      <Counter></Counter>
+      <div>
+      <User></User>
+      </div>
+      
+      
     </div>
   );
+}
+
+
+
+function User() {
+
+  const productStyle = {
+    border: "2px solid grey",
+    margin: "10px",
+    padding: " 10px",
+    boxShadow: "5px 5px 40px green",
+    float: "left"
+  }
+
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+  fetch('https://jsonplaceholder.typicode.com/users')
+  .then(res => res.json())
+  .then(data => setUser(data))
+
+}, []);
+
+  return (
+    <div style= {productStyle}>
+      <ul>
+        {
+          user.map(user => <li>{user.name}</li> )
+        }
+      </ul>
+    </div>
+  )
+  
+}
+
+function Counter() {
+
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <h1>Count: {count} </h1>
+      <button onClick = {() => setCount(count + 1)}>Increase</button>
+      <button onClick = {() => setCount(count - 1)}>Decrease</button>
+    </div>
+  )
+  
 }
 
 function Product(props) {
